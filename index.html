@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="What's for lunch?! Let's find out." />
+    <meta name="author" content="Taylor Jones - NexGen Digital Solutions LLC - Plymouth, Indiana" />
+    <!-- <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico" /> -->
+
+    <title>What's For Lunch? | Auto Park Buick GMC</title>
+
+    <link rel="canonical" href="https://lunch.nexgendms.com/" />
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+        integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous" />
+
+    <!-- Custom styles for this template -->
+    <link href="./assets/css/main.css" rel="stylesheet" />
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/59d21e7f77.js" crossorigin="anonymous"></script>
+
+    <!-- Spinwheel Config -->
+    <script src="./assets/js/Winwheel.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+
+    <!-- Moment.JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
+        crossorigin="anonymous"></script>
+</head>
+
+<body class="text-center">
+    <div class="container">
+        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+            <header class="masthead mb-auto">
+                <div class="inner">
+                    <h4 class="masthead-brand">
+                        "Hey... What's for lunch?" - <small><i>Everyone</i></small>
+                    </h4>
+                    <nav class="nav nav-masthead justify-content-center">
+                        <a class="nav-link" href="#"><i class="fa fa-info-circle"></i> How To</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main role="main" class="inner cover">
+                <!-- Begin Spinner -->
+                <div class="row w-100 pb-3">
+                    <div class="col-12 col-md-6 text-left">
+                        <h1 class="cover-heading">Let's Get Started</h1>
+                        <p class="lead">Choose your spin speed and click/tap spin!</p>
+
+                        <div class="row border m-0 p-3">
+                            <div class="col-4 pb-3">Low <small>(3)</small></div>
+                            <div class="col-4 pb-3 text-center">
+                                Medium <small>(6)</small>
+                            </div>
+                            <div class="col-4 pb-3 text-right p-0">
+                                High <small>(10)</small>
+                            </div>
+                            <div class="col-12">
+                                <input type="range" class="custom-range w-100" min="1" max="3" id="spinSpeedRange"
+                                    onClick="powerSelected($().val());" />
+                            </div>
+                        </div>
+                        <p class="lead pt-3">
+                            <button id="spin_button" class="btn btn-lg btn-block btn-outline-success"
+                                onClick="startSpin()">
+                                Spin
+                            </button>
+                        </p>
+                        <!-- Begin Results -->
+                        <div class="row border-top">
+                            <div class="col-12 text-left">
+                                <h4 class="cover-heading pt-3">Spin Results</h4>
+                                <ul class="list-group">
+                                    <a class="list-group-item">
+                                        <i class="fa fa-dice-one fa-2x"></i>
+                                        <span id="result_1" class="lead">No Result</span>
+                                    </a>
+                                    <a class="list-group-item">
+                                        <i class="fa fa-dice-two fa-2x"></i>
+                                        <span id="result_2" class="lead">No Result</span>
+                                    </a>
+                                    <a class="list-group-item">
+                                        <i class="fa fa-dice-three fa-2x"></i>
+                                        <span id="result_3" class="lead">No Result</span>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="row mb-3">
+                            <div class="col text-right">
+                                <h4>Remaining Spins:</h4>
+                            </div>
+                            <div class="col text-left">
+                                <h4 id="spins_remaining" class="text-success"></h4>
+                            </div>
+                        </div>
+                        <div class="power_controls">
+                            <table class="power" cellpadding="0" cellspacing="0" border="0">
+                                <td width="600" height="600" class="the_wheel" align="center" valign="center">
+                                    <canvas id="canvas" width="600" height="600">
+                                        <p style="
+                                   {
+                                    color: white;
+                                  }
+                                " align="center">
+                                            Sorry, your browser doesn't support canvas. Please try
+                                            another.
+                                        </p>
+                                    </canvas>
+                                </td>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <footer class="mastfoot mt-auto">
+                <div class="inner">
+                    <span class="text-center">
+                        <b>Current Time: </b>
+                        <span id="current_time"></span>
+                    </span>
+                    <p>
+                        Made with <i class="fa fa-heart"></i> for everyone...
+                        <u>Except</u> Kyle.
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+        integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous">
+        </script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+        integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous">
+        </script>
+    <script>
+        $(document).ready(function () {
+            $("body").bootstrapMaterialDesign();
+        });
+    </script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    <script>
+        // live clock
+
+        function update() {
+            $('#current_time').text(moment().format('MMMM D, YYYY H:mm:ss'));
+        }
+
+        setInterval(update, 1000);
+    </script>
+    <script>
+        // Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyB2XIMx6bdZcG0gGhM8233s8Vuv27b6dFQ",
+            authDomain: "lunchtimer.firebaseapp.com",
+            databaseURL: "https://lunchtimer.firebaseio.com",
+            projectId: "lunchtimer",
+            storageBucket: "lunchtimer.appspot.com",
+            messagingSenderId: "954509049588",
+            appId: "1:954509049588:web:4d7feeb852da07d90f28a1",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+
+        const db = firebase.database();
+        let docRef = db.ref("app/YIBsfirMCeft5n4KMPBw/");
+        currentTime = moment().format();
+
+
+
+        getSpins();
+
+        // global vars
+        spinCount = "";
+        timeRemainingToReset = "";
+        result_1 = "No Result";
+        result_2 = "No Result";
+        result_3 = "No Result";
+        lockout = null;
+        lockStatus = null;
+        lockTime = "";
+        lockTimer = 12;
+        unlockTime = "";
+
+        getPreviousResults();
+        $(document).ready(function () {
+            
+            checkLockout();
+
+            //$("#spins_remaining").text(spinCount);
+            //$('#result_1').text(result_1);
+            //$('#result_2').text(result_2);
+            //$('#result_3').text(result_3);
+        });
+
+        // Live UI - jQuery
+
+
+        // Create new wheel object specifying the parameters at creation time.
+        let theWheel = new Winwheel({
+            outerRadius: 295, // Set outer radius so wheel fits inside the background.
+            innerRadius: 25, // Make wheel hollow so segments don't go all way to center.
+            textFontSize: 18, // Set default font size for the segments.
+            textOrientation: "horizontal", // Make text vertial so goes down from the outside of wheel.
+            textAlignment: "outer", // Align text to outside of wheel.
+            numSegments: 25, // Specify number of segments.
+            // Define segments including colour and text.
+            segments: [
+                // font size and test colour overridden on backrupt segments.
+                {
+                    fillStyle: "#ee1c24",
+                    text: "McDonalds"
+                },
+                {
+                    fillStyle: "#3cb878",
+                    text: "Subway"
+                },
+                {
+                    fillStyle: "#f6989d",
+                    text: "Penguin Point"
+                },
+                {
+                    fillStyle: "#00aef0",
+                    text: "Hardees"
+                },
+                {
+                    fillStyle: "#f26522",
+                    text: "Wendys"
+                },
+                {
+                    fillStyle: "#000000",
+                    text: "SPIN AGAIN",
+                    textFontSize: 22,
+                    textFillStyle: "#ffffff",
+                },
+                {
+                    fillStyle: "#e70697",
+                    text: "Mi Camino"
+                },
+                {
+                    fillStyle: "#fff200",
+                    text: "King Gyros"
+                },
+                {
+                    fillStyle: "#f6989d",
+                    text: "Dairy Queen"
+                },
+                {
+                    fillStyle: "#ee1c24",
+                    text: "Burger King"
+                },
+                {
+                    fillStyle: "#3cb878",
+                    text: "Tacobell"
+                },
+                {
+                    fillStyle: "#f26522",
+                    text: "KFC"
+                },
+                {
+                    fillStyle: "#a186be",
+                    text: "Bourbon Street"
+                },
+                {
+                    fillStyle: "#fff200",
+                    text: "Jimmy Johns"
+                },
+                {
+                    fillStyle: "#00aef0",
+                    text: "Wings"
+                },
+                {
+                    fillStyle: "#ee1c24",
+                    text: "Walmart"
+                },
+                {
+                    fillStyle: "#f6989d",
+                    text: "Pizza Bills"
+                },
+                {
+                    fillStyle: "#f26522",
+                    text: "Applebees"
+                },
+                {
+                    fillStyle: "#3cb878",
+                    text: "Yolandas"
+                },
+                {
+                    fillStyle: "#000000",
+                    text: "SPIN AGAIN",
+                    textFontSize: 22,
+                    textFillStyle: "#ffffff",
+                },
+                {
+                    fillStyle: "#a186be",
+                    text: "Pizza Hut"
+                },
+                {
+                    fillStyle: "#fff200",
+                    text: "Opies"
+                },
+                {
+                    fillStyle: "#00aef0",
+                    text: "Little Caesars"
+                },
+                {
+                    fillStyle: "#00aef0",
+                    text: "Mancinos"
+                },
+                {
+                    fillStyle: "#000000",
+                    text: "SPIN AGAIN",
+                    textFontSize: 22,
+                    textFillStyle: "#ffffff",
+                },
+            ],
+            // Specify the animation to use.
+            animation: {
+                type: "spinToStop",
+                duration: 10, // Duration in seconds.
+                spins: 3, // Default number of complete spins.
+                callbackFinished: alertPrize,
+                callbackSound: playSound, // Function to call when the tick sound is to be triggered.
+                soundTrigger: "pin", // Specify pins are to trigger the sound, the other option is 'segment'.
+            },
+            // Turn pins on.
+            pins: {
+                number: 25,
+                fillStyle: "silver",
+                outerRadius: 8,
+            },
+        });
+
+        // Loads the tick audio sound in to an audio object.
+        let audio = new Audio("./assets/media/tick.mp3");
+
+        // This function is called when the sound is to be played.
+        function playSound() {
+            // Stop and rewind the sound if it already happens to be playing.
+            audio.pause();
+            audio.currentTime = 0;
+
+            // Play the sound.
+            audio.play();
+        }
+
+        // Vars used by the code in this page to do power controls.
+        let wheelPower = $("#spinSpeedRange").val();
+        let wheelSpinning = false;
+
+        // -------------------------------------------------------
+        // Function to handle the onClick on the power slider.
+        // -------------------------------------------------------
+        function powerSelected(powerLevel) {
+            // Ensure that power can't be changed while wheel is spinning.
+            if (wheelSpinning == false) {
+                // Set wheelPower var used when spin button is clicked.
+                wheelPower = $("#spinSpeedRange").val(); //powerLevel
+
+                // disable spin button
+                $("#spin_button")
+                    .removeClass("btn-primary")
+                    .addClass("btn-secondary")
+                    .removeAttr("disabled");
+            }
+        }
+
+        // -------------------------------------------------------
+        // Click handler for spin button.
+        // -------------------------------------------------------
+        function startSpin() {
+            // Ensure that spinning can't be clicked again while already running.
+            if (wheelSpinning == false && spinCount !== 0) {
+                // Based on the power level selected adjust the number of spins for the wheel, the more times is has
+                // to rotate with the duration of the animation the quicker the wheel spins. Spin only if spinsRemaining
+                // is greater than zero.
+                if (wheelPower == 1) {
+                    theWheel.animation.spins = 3;
+                } else if (wheelPower == 2) {
+                    theWheel.animation.spins = 6;
+                } else if (wheelPower == 3) {
+                    theWheel.animation.spins = 10;
+                }
+
+                // Decrement Spin Count
+                nextCount = --spinCount;
+
+                updateSpins(nextCount);
+
+                // Update Spins Remaining Counter
+                if (nextCount == 2) {
+                    $("#spins_remaining")
+                        .removeClass("text-success")
+                        .addClass("text-warning");
+                } else if (nextCount == 1) {
+                    $("#spins_remaining")
+                        .removeClass("text-warning")
+                        .addClass("text-danger");
+                } else {
+                    $("#spins_remaining").text(nextCount);
+                }
+
+                // Disable the spin button so can't click again while wheel is spinning.
+                $("#spin_button").removeClass("btn-outline-success");
+                $("#spin_button").addClass("btn-outline-secondary");
+                $("#spin_button").attr("disabled", "");
+
+                // Begin the spin animation by calling startAnimation on the wheel object.
+                theWheel.startAnimation();
+
+                // Set to true so that power can't be changed and spin button re-enabled during
+                // the current animation. The user will have to reset before spinning again.
+                wheelSpinning = true;
+            }
+        }
+
+        // -------------------------------------------------------
+        // Function for reset button.
+        // -------------------------------------------------------
+        function resetWheel() {
+            theWheel.stopAnimation(false); // Stop the animation, false as param so does not call callback function.
+            theWheel.rotationAngle = 0; // Re-set the wheel angle to 0 degrees.
+            theWheel.draw(); // Call draw to render changes to the wheel.
+
+            wheelSpinning = false; // Reset to false to power buttons and spin can be clicked again.
+            $("#spin_button").removeAttr("disabled");
+            $("#spin_button").removeClass("btn-outline-secondary");
+            $("#spin_button").addClass("btn-outline-success");
+        }
+
+        // -------------------------------------------------------
+        // Called when the spin animation has finished by the callback feature of the wheel because I specified callback in the parameters.
+        // -------------------------------------------------------
+        function alertPrize(indicatedSegment) {
+            // Just alert to the user what happened.
+            // In a real project probably want to do something more interesting than this with the result.
+            if (indicatedSegment.text == "SPIN AGAIN") {
+                alert("FREE SPIN! Try Again.");
+                nextCount = ++spinCount
+                updateSpins(nextCount);
+                resetWheel();
+
+            }
+            if (spinCount == 2 && indicatedSegment.text !== "SPIN AGAIN") {
+                // set the var
+                result_1 = indicatedSegment.text;
+
+                // update firebase
+                firebase
+                    .database()
+                    .ref("app/result1")
+                    .set({
+                        result1: result_1,
+                        time: moment().format()
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to add Spin 1 result: " + error);
+                            } else {
+                                console.log("Spin 1 Result Added to Firebase: " + result_1);
+                            }
+                        }
+                    );
+                // show the result
+                $('#result_1').text(result_1);
+
+                //reset the button/wheel
+                resetWheel();
+            }
+            if (spinCount == 1 && indicatedSegment.text !== "SPIN AGAIN") {
+                // set the var 
+                result_2 = indicatedSegment.text;
+
+                // update firebase
+                firebase
+                    .database()
+                    .ref("app/result2")
+                    .set({
+                        result2: result_2,
+                        time: moment().format()
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to add Spin 2 result: " + error);
+                            } else {
+                                console.log("Spin 2 Result Added to Firebase: " + result_2);
+                            }
+                        }
+                    );
+                // show the result
+                $('#result_2').text(result_2);
+
+                // reset the spin button/wheel
+                resetWheel();
+            }
+            if (spinCount == 0 && indicatedSegment.text !== "SPIN AGAIN") {
+                result_3 = indicatedSegment.text;
+
+                // get the current time
+                finalSpinTime = moment().format();
+
+                // calculate unlock time
+                unlockTime = moment(finalSpinTime).add(12, 'h').format();
+
+                // update firebase with result
+                firebase
+                    .database()
+                    .ref("app/result3")
+                    .set({
+                        result3: result_3,
+                        time: finalSpinTime
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to add Spin 3 result: " + error);
+                            } else {
+                                console.log("Spin 3 Result Added to Firebase: " + result_3);
+                            }
+                        }
+                    );
+                // set result text
+                $('#result_3').text(result_3);
+
+                // set to lockout since it's the last spin
+                lockout = true;
+
+                // and record to firebase final spin time
+                firebase
+                    .database()
+                    .ref("app/lockout")
+                    .set({
+                        value: true,
+                        lockTime: finalSpinTime,
+                        unlockTime: unlockTime
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to add Lockout Status: " + error);
+                            } else {
+                                console.log("Lockout Recorded to Firebase at: " + finalSpinTime + " / " + "Unlocks at: " + unlockTime);
+                            }
+                        }
+                    );
+
+            }
+        }
+
+        // -------------------------------------------------------
+        // GET SPINS
+        // -------------------------------------------------------
+        function getSpins() {
+            firebase.database()
+                .ref("app/YIBsfirMCeft5n4KMPBw/remainingSpins")
+                .on('value', snap => {
+                    console.log("getSpins() Spins Remaining: " + snap.val());
+                    spinCount = snap.val();
+
+                    // format spin counter
+                    switch (spinCount) {
+
+                        case 3:
+                            // action
+                            $("#spins_remaining")
+                                .removeClass("text-warning")
+                                .removeClass("text-danger")
+                                .addClass("text-success");
+                            break;
+
+                        case 2:
+                            // action
+                            $("#spins_remaining")
+                                .removeClass("text-success")
+                                .removeClass("text-danger")
+                                .addClass("text-warning");
+                            break;
+
+                        case 1:
+                            // action
+                            $("#spins_remaining")
+                                .removeClass("text-warning")
+                                .removeClass("text-success")
+                                .addClass("text-danger");
+                            break;
+
+                        case 0:
+                            // Disable the spin button so can't click.
+                            $("#spin_button").removeClass("btn-outline-success");
+                            $("#spin_button").addClass("btn-outline-secondary");
+                            $("#spin_button").attr("disabled", "");
+
+                            // format spin counter
+                            $("#spins_remaining")
+                                .removeClass("text-warning")
+                                .removeClass("text-success")
+                                .addClass("text-danger");
+                            break;
+                        default:
+                            // action
+                            $("#spins_remaining")
+                                .removeClass("text-success")
+                                .removeClass("text-warning")
+                                .removeClass("text-danger")
+                                .addClass("text-primary");
+
+                    }
+
+                    // set the spin counter
+                    $("#spins_remaining").text(spinCount);
+
+                    // return a value
+                    return snap.val();
+                })
+
+
+        }
+
+        // -------------------------------------------------------
+        // GET PREVIOUS RESULTS
+        // -------------------------------------------------------
+        function getPreviousResults() {
+
+            if (lockout == false) {
+
+                // get result_1
+                firebase.database()
+                    .ref("app/result1/result1")
+                    .on('value', snap => {
+                        console.log("Previous Result 1: " + snap.val());
+                        result_1 = snap.val();
+                        $('#result_1').text(result_1);
+                    })
+
+                // get result_2
+                firebase.database()
+                    .ref("app/result2/result2")
+                    .on('value', snap => {
+                        console.log("Previous Result 2: " + snap.val());
+                        result_2 = snap.val();
+                        $('#result_2').text(result_2);
+                    })
+
+                // get result_3
+                firebase.database()
+                    .ref("app/result3/result3")
+                    .on('value', snap => {
+                        console.log("Previous Result 3: " + snap.val());
+                        result_3 = snap.val();
+                        $('#result_3').text(result_3);
+                    })
+
+            } else if (lockout == true) {
+
+                // get result_1
+                firebase.database()
+                    .ref("app/result1/result1")
+                    .on('value', snap => {
+                        console.log("Previous Result 1: " + snap.val());
+                        result_1 = snap.val();
+                        $('#result_1').text(result_1);
+                    })
+
+                // get result_2
+                firebase.database()
+                    .ref("app/result2/result2")
+                    .on('value', snap => {
+                        console.log("Previous Result 2: " + snap.val());
+                        result_2 = snap.val();
+                        $('#result_2').text(result_2);
+                    })
+
+                // get result_3
+                firebase.database()
+                    .ref("app/result3/result3")
+                    .on('value', snap => {
+                        console.log("Previous Result 3: " + snap.val());
+                        result_3 = snap.val();
+                        $('#result_3').text(result_3);
+                    })
+            } else {
+
+                // set result_1: No Result
+                result_1 = "No Result"
+                $('#result_1').text(result_1);
+
+                // set result_2: No Result
+                result_2 = "No Result"
+                $('#result_2').text(result_2);
+
+                // set result_3: No Result
+                result_3 = "No Result"
+                $('#result_3').text(result_3);
+            }
+        }
+
+        // -------------------------------------------------------
+        // UPDATE FIREBASE SPINS REMAINING
+        // -------------------------------------------------------
+        function updateSpins(newCount) {
+            if ((spinCount = 0)) {
+                firebase
+                    .database()
+                    .ref("app/YIBsfirMCeft5n4KMPBw")
+                    .set({
+                        remainingSpins: newCount,
+                        finalSpinTime: "DEBUG",
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to update final spin. " + error);
+                            } else {
+                                console.log("Final spin written to database.");
+                            }
+                        }
+                    );
+            } else {
+                firebase
+                    .database()
+                    .ref("app/YIBsfirMCeft5n4KMPBw")
+                    .set({
+                        remainingSpins: newCount,
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to update spin count. " + error);
+                            } else {
+                                console.log("Spin " + newCount + " written to database.");
+                            }
+                        }
+                    );
+
+                // make sure the spin button is still enabled
+                $("#spin_button").removeAttr("disabled");
+                $("#spin_button").removeClass("btn-outline-secondary");
+                $("#spin_button").addClass("btn-outline-success");
+            }
+            return;
+        }
+
+        // -------------------------------------------------------
+        // CHECK LOCKOUT STATUS
+        // -------------------------------------------------------
+        function checkLockout() {
+
+            // check if it's time to unlock
+            if (moment(currentTime).isSameOrAfter(unlockTime) == true) {
+                //if (moment(currentTime).isSameOrAfter(unlockTime)) {
+                // write 3 spins to firebase
+                nextCount = 3;
+                updateSpins(nextCount);
+                resetWheel();
+
+                // set firebase lockout to false
+                // and record to firebase final spin time
+                firebase
+                    .database()
+                    .ref("app/lockout")
+                    .set({
+                        value: false,
+                        lockTime: null
+                    },
+                        function (error) {
+                            if (error) {
+                                console.log("Unable to amend Lockout Status: " + error);
+                            } else {
+                                // set lockout to false
+                                lockout = false;
+                            }
+                        }
+                    );
+
+                console.log("Ready to Spin.");
+            } else {
+                console.log("App Locked Until: " + getUnlockTime());
+            }
+            // if past lockout time setting
+
+            // if still before lockout time setting
+        }
+
+        function getLockTime() {
+            firebase.database()
+                .ref("app/lockout/lockTime")
+                .on('value', snap => {
+
+                    // Write Lockout Time to Console
+                    //console.log("App Locked On: " + snap.val());
+
+                    // set the var 
+                    lockTime = moment(snap.val()).format();
+
+                })
+            console.log("Locktime: " + this.lockTime);
+            // return a value
+            return this.lockTime;
+        }
+
+        function getUnlockTime() {
+            firebase.database()
+                .ref("app/lockout/unlockTime")
+                .on('value', snap => {
+
+                    // Write Lockout Time to Console
+                    //console.log("App Locked On: " + snap.val());
+
+                    // set the var 
+                    unlockTime = moment(snap.val()).format();
+
+
+                })
+            //console.log("Unlock Time: " + this.unlockTime);
+            // return a value
+            return this.unlockTime;
+        }
+
+        function getLockStatus() {
+            firebase.database()
+                .ref("app/lockout/value")
+                .on('value', snap => {
+
+                    // Write Lockout Time to Console
+                    //console.log("App Lock Status is: " + snap.val());
+
+                    // set the var 
+                    lockout = snap.val();
+
+                    // return a value
+                    return lockout;
+                })
+        }
+    </script>
+</body>
+
+</html>
