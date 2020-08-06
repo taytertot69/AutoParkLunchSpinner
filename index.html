@@ -13,9 +13,7 @@
     <link rel="canonical" href="https://lunch.nexgendms.com/" />
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet"
-        href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
-        integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous" />
 
     <!-- Custom styles for this template -->
     <link href="./assets/css/main.css" rel="stylesheet" />
@@ -27,14 +25,14 @@
     <script src="./assets/js/Winwheel.min.js"></script>
 
     <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 
     <!-- Moment.JS-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
-        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
+
+    <!-- Flipdown.js -->
+    <script src="./assets/js/flipdown/js/flipdown.js"></script>
+    <link rel="stylesheet" href="./assets/js/flipdown/css/flipdown.css" />
 </head>
 
 <body class="text-center">
@@ -67,13 +65,11 @@
                                 High <small>(10)</small>
                             </div>
                             <div class="col-12">
-                                <input type="range" class="custom-range w-100" min="1" max="3" id="spinSpeedRange"
-                                    onClick="powerSelected($().val());" />
+                                <input type="range" class="custom-range w-100" min="1" max="3" id="spinSpeedRange" onClick="powerSelected($().val());" />
                             </div>
                         </div>
                         <p class="lead pt-3">
-                            <button id="spin_button" class="btn btn-lg btn-block btn-outline-success"
-                                onClick="startSpin()">
+                            <button id="spin_button" class="btn btn-lg btn-block btn-outline-success" onClick="startSpin()">
                                 Spin
                             </button>
                         </p>
@@ -141,20 +137,43 @@
                 </div>
             </footer>
         </div>
+        <!-- Lockout Modal -->
+        <div class="modal fade" id="lockoutModal" tabindex="-1" role="dialog" aria-labelledby="lockoutModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body text-center">
+                        <div class="col-12">
+                            <h3 id="lockoutModalTitle">That's it for today!</h3>
+                            <span class="lead">Spins will reset in:</span>
+                        </div>
+                        <div class="col-12">
+                            <h3 id="lockoutModalTitle">That's it for today!</h3>
+                            <span class="lead">Spins will reset in:</span>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                            <div id="flipdown" class="flipdown"></div>
+                        </div>
+
+
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
-    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
-        integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous">
-        </script>
-    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
-        integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous">
-        </script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous">
+    </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("body").bootstrapMaterialDesign();
         });
     </script>
@@ -188,39 +207,45 @@
         firebase.initializeApp(firebaseConfig);
     </script>
     <script>
-
         const db = firebase.database();
         let docRef = db.ref("app/YIBsfirMCeft5n4KMPBw/");
         currentTime = moment().format();
 
 
 
-        getSpins();
 
         // global vars
-        spinCount = "";
-        timeRemainingToReset = "";
+        spinCount = null;
+        timeRemainingToReset = null;
         result_1 = "No Result";
         result_2 = "No Result";
         result_3 = "No Result";
         lockout = null;
         lockStatus = null;
-        lockTime = "";
+        lockTime = null;
         lockTimer = 12;
-        unlockTime = "";
+        unlockTime = null;
+        unlockUnixTime = null;
+        timeToUnlock = unlockTime - moment().unix();
 
+        firebase.database()
+            .ref("app/lockout/unlockTime")
+            .on('value', snap => {
+                unlockTime = snap.val();
+            });
+        getSpins();
         getPreviousResults();
-        $(document).ready(function () {
-            
+
+        $(document).ready(function() {
+
             checkLockout();
 
-            //$("#spins_remaining").text(spinCount);
-            //$('#result_1').text(result_1);
-            //$('#result_2').text(result_2);
-            //$('#result_3').text(result_3);
         });
 
         // Live UI - jQuery
+        $('#result_1').text(result_1);
+        $('#result_2').text(result_2);
+        $('#result_3').text(result_3);
 
 
         // Create new wheel object specifying the parameters at creation time.
@@ -237,104 +262,80 @@
                 {
                     fillStyle: "#ee1c24",
                     text: "McDonalds"
-                },
-                {
+                }, {
                     fillStyle: "#3cb878",
                     text: "Subway"
-                },
-                {
+                }, {
                     fillStyle: "#f6989d",
                     text: "Penguin Point"
-                },
-                {
+                }, {
                     fillStyle: "#00aef0",
                     text: "Hardees"
-                },
-                {
+                }, {
                     fillStyle: "#f26522",
                     text: "Wendys"
-                },
-                {
+                }, {
                     fillStyle: "#000000",
                     text: "SPIN AGAIN",
                     textFontSize: 22,
                     textFillStyle: "#ffffff",
-                },
-                {
+                }, {
                     fillStyle: "#e70697",
                     text: "Mi Camino"
-                },
-                {
+                }, {
                     fillStyle: "#fff200",
                     text: "King Gyros"
-                },
-                {
+                }, {
                     fillStyle: "#f6989d",
                     text: "Dairy Queen"
-                },
-                {
+                }, {
                     fillStyle: "#ee1c24",
                     text: "Burger King"
-                },
-                {
+                }, {
                     fillStyle: "#3cb878",
                     text: "Tacobell"
-                },
-                {
+                }, {
                     fillStyle: "#f26522",
                     text: "KFC"
-                },
-                {
+                }, {
                     fillStyle: "#a186be",
                     text: "Bourbon Street"
-                },
-                {
+                }, {
                     fillStyle: "#fff200",
                     text: "Jimmy Johns"
-                },
-                {
+                }, {
                     fillStyle: "#00aef0",
                     text: "Wings"
-                },
-                {
+                }, {
                     fillStyle: "#ee1c24",
                     text: "Walmart"
-                },
-                {
+                }, {
                     fillStyle: "#f6989d",
                     text: "Pizza Bills"
-                },
-                {
+                }, {
                     fillStyle: "#f26522",
                     text: "Applebees"
-                },
-                {
+                }, {
                     fillStyle: "#3cb878",
                     text: "Yolandas"
-                },
-                {
+                }, {
                     fillStyle: "#000000",
                     text: "SPIN AGAIN",
                     textFontSize: 22,
                     textFillStyle: "#ffffff",
-                },
-                {
+                }, {
                     fillStyle: "#a186be",
                     text: "Pizza Hut"
-                },
-                {
+                }, {
                     fillStyle: "#fff200",
                     text: "Opies"
-                },
-                {
+                }, {
                     fillStyle: "#00aef0",
                     text: "Little Caesars"
-                },
-                {
+                }, {
                     fillStyle: "#00aef0",
                     text: "Mancinos"
-                },
-                {
+                }, {
                     fillStyle: "#000000",
                     text: "SPIN AGAIN",
                     textFontSize: 22,
@@ -380,7 +381,7 @@
         // -------------------------------------------------------
         function powerSelected(powerLevel) {
             // Ensure that power can't be changed while wheel is spinning.
-            if (wheelSpinning == false) {
+            if (!wheelSpinning) {
                 // Set wheelPower var used when spin button is clicked.
                 wheelPower = $("#spinSpeedRange").val(); //powerLevel
 
@@ -397,7 +398,7 @@
         // -------------------------------------------------------
         function startSpin() {
             // Ensure that spinning can't be clicked again while already running.
-            if (wheelSpinning == false && spinCount !== 0) {
+            if (!wheelSpinning && spinCount !== 0) {
                 // Based on the power level selected adjust the number of spins for the wheel, the more times is has
                 // to rotate with the duration of the animation the quicker the wheel spins. Spin only if spinsRemaining
                 // is greater than zero.
@@ -477,10 +478,10 @@
                     .database()
                     .ref("app/result1")
                     .set({
-                        result1: result_1,
-                        time: moment().format()
-                    },
-                        function (error) {
+                            result1: result_1,
+                            time: moment().format()
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to add Spin 1 result: " + error);
                             } else {
@@ -503,10 +504,10 @@
                     .database()
                     .ref("app/result2")
                     .set({
-                        result2: result_2,
-                        time: moment().format()
-                    },
-                        function (error) {
+                            result2: result_2,
+                            time: moment().format()
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to add Spin 2 result: " + error);
                             } else {
@@ -523,21 +524,22 @@
             if (spinCount == 0 && indicatedSegment.text !== "SPIN AGAIN") {
                 result_3 = indicatedSegment.text;
 
+                //var time = moment();
                 // get the current time
                 finalSpinTime = moment().format();
 
                 // calculate unlock time
-                unlockTime = moment(finalSpinTime).add(12, 'h').format();
+                unlockTime = moment(finalSpinTime).add(12, 'h').unix();
 
                 // update firebase with result
                 firebase
                     .database()
                     .ref("app/result3")
                     .set({
-                        result3: result_3,
-                        time: finalSpinTime
-                    },
-                        function (error) {
+                            result3: result_3,
+                            time: finalSpinTime
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to add Spin 3 result: " + error);
                             } else {
@@ -551,20 +553,23 @@
                 // set to lockout since it's the last spin
                 lockout = true;
 
+
+
                 // and record to firebase final spin time
                 firebase
                     .database()
                     .ref("app/lockout")
                     .set({
-                        value: true,
-                        lockTime: finalSpinTime,
-                        unlockTime: unlockTime
-                    },
-                        function (error) {
+                            value: true,
+                            lockTime: finalSpinTime,
+                            unlockTime: unlockTime
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to add Lockout Status: " + error);
                             } else {
-                                console.log("Lockout Recorded to Firebase at: " + finalSpinTime + " / " + "Unlocks at: " + unlockTime);
+                                console.log("Lockout Recorded to Firebase at: " + finalSpinTime + " / " +
+                                    "Unlocks at: " + unlockTime);
                             }
                         }
                     );
@@ -591,6 +596,7 @@
                                 .removeClass("text-warning")
                                 .removeClass("text-danger")
                                 .addClass("text-success");
+                            $('#lockoutModal').modal('hide');
                             break;
 
                         case 2:
@@ -599,6 +605,7 @@
                                 .removeClass("text-success")
                                 .removeClass("text-danger")
                                 .addClass("text-warning");
+                            $('#lockoutModal').modal('hide');
                             break;
 
                         case 1:
@@ -607,6 +614,7 @@
                                 .removeClass("text-warning")
                                 .removeClass("text-success")
                                 .addClass("text-danger");
+                            $('#lockoutModal').modal('hide');
                             break;
 
                         case 0:
@@ -620,6 +628,12 @@
                                 .removeClass("text-warning")
                                 .removeClass("text-success")
                                 .addClass("text-danger");
+
+                            $('#lockoutModal').modal({
+                                backdrop: 'static',
+                                keyboard: false,
+                                focus: true
+                            });
                             break;
                         default:
                             // action
@@ -646,7 +660,7 @@
         // -------------------------------------------------------
         function getPreviousResults() {
 
-            if (lockout == false) {
+            if (!lockout) {
 
                 // get result_1
                 firebase.database()
@@ -675,7 +689,7 @@
                         $('#result_3').text(result_3);
                     })
 
-            } else if (lockout == true) {
+            } else if (lockout) {
 
                 // get result_1
                 firebase.database()
@@ -728,10 +742,10 @@
                     .database()
                     .ref("app/YIBsfirMCeft5n4KMPBw")
                     .set({
-                        remainingSpins: newCount,
-                        finalSpinTime: "DEBUG",
-                    },
-                        function (error) {
+                            remainingSpins: newCount,
+                            finalSpinTime: "DEBUG",
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to update final spin. " + error);
                             } else {
@@ -744,9 +758,9 @@
                     .database()
                     .ref("app/YIBsfirMCeft5n4KMPBw")
                     .set({
-                        remainingSpins: newCount,
-                    },
-                        function (error) {
+                            remainingSpins: newCount,
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to update spin count. " + error);
                             } else {
@@ -782,10 +796,10 @@
                     .database()
                     .ref("app/lockout")
                     .set({
-                        value: false,
-                        lockTime: null
-                    },
-                        function (error) {
+                            value: false,
+                            lockTime: null
+                        },
+                        function(error) {
                             if (error) {
                                 console.log("Unable to amend Lockout Status: " + error);
                             } else {
@@ -830,13 +844,27 @@
                     //console.log("App Locked On: " + snap.val());
 
                     // set the var 
-                    unlockTime = moment(snap.val()).format();
-
-
+                    unlockTime = snap.val();
                 })
-            //console.log("Unlock Time: " + this.unlockTime);
-            // return a value
-            return this.unlockTime;
+                //console.log("Unlock Time: " + this.unlockTime);
+                // return a value
+            return this.unlockTime
+        }
+
+        function getUnixUnlockTime() {
+            firebase.database()
+                .ref("app/lockout/unlockTime")
+                .on('value', snap => {
+
+                    // Write Lockout Time to Console
+                    //console.log("App Locked On: " + snap.val());
+
+                    // set the var 
+                    unlockUnixTime = moment(snap.val()).unix();
+                })
+                //console.log("Unlock Time: " + this.unlockTime);
+                // return a value
+            return this.unlockUnixTime
         }
 
         function getLockStatus() {
@@ -854,6 +882,40 @@
                     return lockout;
                 })
         }
+
+        // Flipdown.js Example
+        var time = null;
+        uTime = null;
+        cTime = moment();
+        uTime = moment(unlockTime).unix();
+        calcTime = ""
+
+        // Unix timestamp (in seconds) to count down to
+        timeDiff = unlockTime
+
+
+        // Set up FlipDown
+        var flipdown = new FlipDown(timeDiff)
+
+        // Start the countdown
+        .start()
+
+        // Do something when the countdown ends
+        .ifEnded(() => {
+            console.log('The countdown has ended!');
+        });
+
+        // Toggle theme
+        var interval = setInterval(() => {
+            let body = document.body;
+            body.classList.toggle('dark-theme');
+            // body.querySelector('#flipdown').classList.toggle('flipdown__theme-dark');
+            // body.querySelector('#flipdown').classList.toggle('flipdown__theme-light');
+        }, 5000);
+
+        // Show version number
+        var ver = document.getElementById('ver');
+        ver.innerHTML = flipdown.version;
     </script>
 </body>
 
