@@ -207,14 +207,12 @@
         firebase.initializeApp(firebaseConfig);
     </script>
     <script>
+        // Constructors
         const db = firebase.database();
         let docRef = db.ref("app/YIBsfirMCeft5n4KMPBw/");
+
+        // Variables
         currentTime = moment().format();
-
-
-
-
-        // global vars
         spinCount = null;
         timeRemainingToReset = null;
         result_1 = "No Result";
@@ -224,23 +222,17 @@
         lockStatus = null;
         lockTime = null;
         lockTimer = 12;
-        unlockTime = null;
+        unlockTime = 0;
         unlockUnixTime = null;
         timeToUnlock = unlockTime - moment().unix();
 
-        firebase.database()
-            .ref("app/lockout/unlockTime")
-            .on('value', snap => {
-                unlockTime = snap.val();
-            });
+        db.ref("app/lockout/unlockTime").on('value', snap => {
+            unlockTime = snap.val();
+        });
+
         getSpins();
         getPreviousResults();
 
-        $(document).ready(function() {
-
-            checkLockout();
-
-        });
 
         // Live UI - jQuery
         $('#result_1').text(result_1);
@@ -576,6 +568,8 @@
 
             }
         }
+
+        checkLockout();
 
         // -------------------------------------------------------
         // GET SPINS
