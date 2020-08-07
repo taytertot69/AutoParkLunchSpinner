@@ -29,6 +29,7 @@ const show = "show";
 const hide = "hide";
 const get = "get";
 const set = "set";
+const now = "now";
 const calculate = "calculate";
 const locked = "locked";
 const unlocked = "unlocked";
@@ -108,7 +109,7 @@ function setState(state) {
         if (!isLocked || isLocked == null || isLocked == undefined) {
 
             isLocked = true; // set state to locked
-            setLockTime() // now write the lock time to database
+            lockTime(set, now) // now write the lock time to database
                 .then(
                     lockModal(show) // once lock time is set, show lockModal
                 );
@@ -193,7 +194,7 @@ function lockModal(action) {
 // function to GET, SET and CALCULATE remaining lock time
 // action is required; setTime is optional unless you are calling
 // lockTime(set, >>Must include time var here<<)
-function lockTime(action, setTime) {
+async function lockTime(action, setTime) {
 
     switch (action) {
         case get:
@@ -219,7 +220,7 @@ function lockTime(action, setTime) {
             getLockTime();
     }
 
-    return;
+    Promise.resolve(); // and resolve the promise
 
     // =========================================== //
     // =========== lockTime FUNCTIONS ============ //
