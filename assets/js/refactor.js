@@ -76,20 +76,24 @@ function setState(state) {
 
     switch (state) {
         // if state = locked
-        case (state === "locked"):
+        case locked:
             lockApp();
             break;
 
             // if state = unlocked
-        case (state === "unlocked"):
+        case unlocked:
             unlockApp();
             break;
 
             // if state = refresh
-        case (state === "refresh"):
+        case refresh:
             defaultAppState();
             break;
     }
+
+    // =========================================== //
+    // ======== STATE SETTING FUNCTIONS ========== //
+    // =========================================== //
     // This function will lock the app as follows:
     // 1. if isLocked == true => Next Step
     //    if isLocked == false || null || undefined => set isLocked = true;
@@ -154,12 +158,12 @@ function lockModal(action) {
 
     switch (action) {
 
-        case (action === "show"): // if action = show
+        case show: // if action = show
             showLockModal(); // show the lockModal
             break;
 
 
-        case (action === "hide"): // if action = hide
+        case hide: // if action = hide
             hideLockModal(); // hide the lockModal
             break;
 
@@ -192,25 +196,31 @@ function lockModal(action) {
 function lockTime(action, setTime) {
 
     switch (action) {
-
-        case (action === "get"): // if action = get
+        case get:
+            // if action = get
             getLockTime();
             break;
 
-        case (action === "set"): // if action = set
-
-            if (setTime == 0) {
+        case set: // if action = set
+            if (setTime === now) {
                 setLockTimeNow();
+            } else if (setTime === null || setTime === undefined) {
+                alert("No time to set declared. LockTime not Set!")
             } else {
                 setLockTime(setTime);
             }
-
             break;
 
-        case (action === "calculate"): // if action = calculate
+        case calculate: // if action = calculate
             calculateRemainingTime();
             break;
+
+        default:
+            getLockTime();
     }
+
+    return;
+
     // =========================================== //
     // =========== lockTime FUNCTIONS ============ //
     // =========================================== //
@@ -249,67 +259,73 @@ function lockTime(action, setTime) {
     }
 }
 
+
 // function to GET, SET and CALCULATE unlock time
 function unlockTime(action, setTime) {
 
     switch (action) {
-
-        case (action === "get"): // if action = get
+        case get:
+            // if action = get
             getUnlockTime();
             break;
 
-        case (action === "set"): // if action = set
-
-            if (setTime === 0) {
+        case set: // if action = set
+            if (setTime === now) {
                 setUnlockTimeNow();
+            } else if (setTime === null || setTime === undefined) {
+                alert("No time to set declared. LockTime not Set!")
             } else {
                 setUnlockTime(setTime);
             }
-
             break;
 
-        case (action === "calculate"): // if action = calculate
+        case calculate: // if action = calculate
             calculateUnlockTime();
             break;
+
+        default:
+            getUnlockTime();
     }
+
+    return;
+
     // =========================================== //
     // =========== lockTime FUNCTIONS ============ //
     // =========================================== //
 
-    // get the time the app was locked
+    // get the time the app was unlocked
     async function getUnlockTime() {
-        // query firebase for the lock time
-        // set lockTime var to result
+        // query firebase for the unlock time
+        // set unlockTime var to result
         Promise.resolve(); // and resolve the promise
     }
 
-    // set the lockTime to a predetermined time
+    // set the unlock to a predetermined time
     // setTime must be a time in UNIX Seconds
     async function setUnlockTime(setTime) {
         // check that setTime is in UNIX Seconds
-        // if it is then write to firebase => lockTime: setTime
+        // if it is then write to firebase => unlockTime: calculatedUnlockTime
         // else, try to convert
         // if can't => throw error
         Promise.resolve(); // and resolve the promise
     }
 
-    // this will set the lock time to the current time
+    // this will set the unlock time to the current time
     async function setUnlockTimeNow() {
         time = moment().unix();
-        // write to firebase => lockTime: time
+        // write to firebase => unlockTime: time
         Promise.resolve(); // and resolve the promise
     }
 
-    // clearLockModal() will clear the lockModal
+    // calculateUnlockTime will calculate when the app is to unlock
     async function calculateUnlockTime() {
         // get the current time
         // get the lock time from firebase
-        // lockTime - currentTime = remainingTime
-        // return remainingTime
+        // unlockTime - currentTime = remainingTimeUntilUnlock
+        // return remainingTimeUntilUnlock
         Promise.resolve(); // and resolve the promise
     }
 }
-
 
 // ===== HELPER FUNCTIONS =====
 
