@@ -30,63 +30,285 @@ var isLocked, lockTime, unlockTime, spinCount, result1,
     mondayResult, tuesdayResult, wednesdayResult, thursdayResult,
     fridayResult, saturdayResult;
 
-var roundOneResults = [game1, game2, game3]; // array
-var roundTwoResults = [game1, game2]; // array
-var roundThreeResults = [game1]; // array
+// customize these variables to your preference
+var lockTimer = 12; // set number of HOURS to lock the app after game
+var errorLockTimer = 0 // set the number of HOURS to lock the app on state change error
 
-var previousResults = []; // previous 6-days results
+// arrays
+var roundOneResults = [game0, game1, game2]; // array holding first game results
+var roundTwoResults = [game0, game1]; // array holding second game results
+var roundThreeResult = [game0]; // array holding final result
+//var previousResults = []; // previous 6-days final game results
 
 // Get/Set App Status
-initAppStatus();
-
+initApp();
 
 // ===== CORE FUNCTIONS =====
 // Initial checkAppStatus function --
 // this function is run at the beginning of page load
-// checks if app is locked or unlocked and performs startup
+// checks if app is locked or unlocked then performs startup
 // functions.
-function initAppStatus() {
+function initApp() {
 
-    isLocked ? lockApp() // if (isLocked == true) => appLocked()
+    // first, let's check the lock status
+    isLocked ? setState(locked) // if (isLocked == true) then lock the app
         :
-        (isLocked == false) ? unlockApp() // else if (isLocked == false) => appUnlocked()
+        (isLocked == false) ? setState(unlocked) // else if (isLocked == false) then unlock the app
         :
-        defaultApp(); // else, (isLocked == neither true nor false) => set app to default state
+        setState(refresh); // otherwise, if (isLocked == neither true nor false) => go ahead and set the app to the default state
 
 }
 
-// This function will lock the app as follows:
-// 1. if isLocked == true => Next Step
-//    if isLocked == false || null || undefined => set isLocked = true;
-// 2. Once isLocked = false then get time until unlocked from the database
-//    If no time until unlock exists/can't be calculated reset the app to
-//    it's default state.
-// 3. Once the time to unlock is determined, display the lockedModal
-//    We'll also get the previous results history while showing the
-//    lockedModal.
-function lockApp() {
+// the setState function provides the logic to setting the state of the app.
+// can be called anywhere in the app with "locked", "unlocked" and "refresh"
+// refresh state will clear all spins and locks.
+function setState(state) {
 
-    setLock().then((showModal()));
+    switch (state) {
+        // if state = locked
+        case locked:
+            lockApp();
+            break;
 
-    async function setLock() {
+            // if state = unlocked
+        case unlocked:
+            unlockApp();
+            break;
+
+            // if state = refresh
+        case refresh:
+            defaultAppState();
+            break;
+    }
+    // This function will lock the app as follows:
+    // 1. if isLocked == true => Next Step
+    //    if isLocked == false || null || undefined => set isLocked = true;
+    // 2. Once isLocked = false then get time until unlocked from the database
+    //    If no time until unlock exists/can't be calculated reset the app to
+    //    it's default state.
+    // 3. Once the time to unlock is determined, display the lockedModal
+    //    We'll also get the previous results history while showing the
+    //    lockedModal.
+    async function lockApp() {
         // if isLocked == false OR null OR undefined
         if (!isLocked || isLocked == null || isLocked == undefined) {
+
             isLocked = true; // set state to locked
-            Promise.resolve(); // resolve promise
+            setLockTime() // now write the lock time to database
+                .then(
+                    lockModal(show) // once lock time is set, show lockModal
+                );
+
+            Promise.resolve(); // and resolve the promise
+
         } else {
-            isLocked = true;
-            Promise.resolve(); // resolve promise
+
+            alert("ALERT: No Prior Lock State Declared - Locking App Anyways")
+            isLocked = true; // set state to locked
+            setLockTime() // now write the lock time to database
+                .then(
+                    lockModal(show) // once lock time is set, show lockModal
+                );
+
+            Promise.resolve(); // and resolve the promise
         }
     }
 
+    async function unlockApp() {
+        // if isLocked == false OR null OR undefined
+        if (!isLocked || isLocked == null || isLocked == undefined) {
+
+            isLocked = false; // set state to unlocked
+            clearLockTime() // now clear the unlock time in database
+                .then(
+                    lockModal(hide) // once lock time is cleared, hide lockModal
+                );
+
+            Promise.resolve(); // and resolve the promise
+
+        } else {
+
+            alert("ALERT: No Prior Lock State Declared - Unlocking App Anyways")
+            isLocked = false; // set state to unlocked
+            clearLockTime() // now clear the unlock time in database
+                .then(
+                    lockModal(hide) // once lock time is cleared, hide lockModal
+                );
+
+            Promise.resolve(); // and resolve the promise
+        }
+    }
 }
+
+function lockModal(action) {
+
+    switch (action) {
+
+        case show: // if action = show
+            showLockModal(); // show the lockModal
+            break;
+
+
+        case hide: // if action = hide
+            hideLockModal(); // hide the lockModal
+            break;
+
+        default:
+            alert("ERR: Modal Action Not Recognized/Declared:\n" + action);
+    }
+
+    // =========================================== //
+    // ========== LOCK MODAL FUNCTIONS =========== //
+    // =========================================== //
+
+    // showLockModal() will display the lockModal with a count down to unlock
+    async function showLockModal() {
+        // get the unlock time
+        // load the countdown
+        // Show the Modal
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // clearLockModal() will clear the lockModal
+    async function hideLockModal() {
+        // Do Stuff
+        Promise.resolve(); // and resolve the promise
+    }
+}
+
+// function to GET, SET and CALCULATE remaining lock time
+function lockTime(action, setTime) {
+
+    switch (action) {
+
+        case get: // if action = get
+            getLockTime();
+            break;
+
+        case set: // if action = set
+
+            if (setTime == 0) {
+                setLockTimeNow();
+            } else {
+                setLockTime(setTime);
+            }
+
+            break;
+
+        case calculate: // if action = calculate
+            calculateRemainingTime();
+            break;
+    }
+    // =========================================== //
+    // =========== lockTime FUNCTIONS ============ //
+    // =========================================== //
+
+    // get the time the app was locked
+    async function getLockTime() {
+        // query firebase for the lock time
+        // set lockTime var to result
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // set the lockTime to a predetermined time
+    // setTime must be a time in UNIX Seconds
+    async function setLockTime(setTime) {
+        // check that setTime is in UNIX Seconds
+        // if it is then write to firebase => lockTime: setTime
+        // else, try to convert
+        // if can't => throw error
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // this will set the lock time to the current time
+    async function setLockTimeNow() {
+        time = moment().unix();
+        // write to firebase => lockTime: time
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // clearLockModal() will clear the lockModal
+    async function calculateRemainingTime() {
+        // get the current time
+        // get the lock time from firebase
+        // lockTime - currentTime = remainingTime
+        // return remainingTime
+        Promise.resolve(); // and resolve the promise
+    }
+}
+
+// function to GET, SET and CALCULATE unlock time
+function unlockTime(action, setTime) {
+
+    switch (action) {
+
+        case get: // if action = get
+            getUnlockTime();
+            break;
+
+        case set: // if action = set
+
+            if (setTime == 0) {
+                setUnlockTimeNow();
+            } else {
+                setUnlockTime(setTime);
+            }
+
+            break;
+
+        case calculate: // if action = calculate
+            calculateUnlockTime();
+            break;
+    }
+    // =========================================== //
+    // =========== lockTime FUNCTIONS ============ //
+    // =========================================== //
+
+    // get the time the app was locked
+    async function getUnlockTime() {
+        // query firebase for the lock time
+        // set lockTime var to result
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // set the lockTime to a predetermined time
+    // setTime must be a time in UNIX Seconds
+    async function setUnlockTime(setTime) {
+        // check that setTime is in UNIX Seconds
+        // if it is then write to firebase => lockTime: setTime
+        // else, try to convert
+        // if can't => throw error
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // this will set the lock time to the current time
+    async function setUnlockTimeNow() {
+        time = moment().unix();
+        // write to firebase => lockTime: time
+        Promise.resolve(); // and resolve the promise
+    }
+
+    // clearLockModal() will clear the lockModal
+    async function calculateUnlockTime() {
+        // get the current time
+        // get the lock time from firebase
+        // lockTime - currentTime = remainingTime
+        // return remainingTime
+        Promise.resolve(); // and resolve the promise
+    }
+}
+
+
 // ===== HELPER FUNCTIONS =====
 
-// This function is used to return bool status of app.
-// USE: Check status of app before writing to DB
+// This function is used to return a bool for status of app.
+// USE CASE: Check status of app before writing to DB, allowing spin, etc...
+// ==============================================================
+// TODO: implement "simple check" & "complex check"            ||
+// Simple check: simply check and return the isLocked bool.    ||
+// Complex Check: Query the database for status and return it. ||
+// ==============================================================
 async function checkAppStatus() {
-
-    // return: if app locked => true / if app unlocked: false / else: error
-    return isLocked ? true : !isLocked ? false : "Error";
-
+    // returns: if app locked => bool true / if app unlocked: bool false / else: error alert
+    return isLocked ? true : !isLocked ? false : alert("Error: No AppStatus Declared/Set");
 }
