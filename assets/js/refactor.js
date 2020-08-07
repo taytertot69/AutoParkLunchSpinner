@@ -24,6 +24,16 @@
 const fb = newFunction();
 const moment = moment();
 
+// function actions
+const show = "show";
+const hide = "hide";
+const get = "get";
+const set = "set";
+const calculate = "calculate";
+const locked = "locked";
+const unlocked = "unlocked";
+const refresh = "refresh";
+
 // variables
 var isLocked, lockTime, unlockTime, spinCount, result1,
     result2, result3, result4, result5, result6, lockTimeRemaining,
@@ -66,17 +76,17 @@ function setState(state) {
 
     switch (state) {
         // if state = locked
-        case locked:
+        case (state === "locked"):
             lockApp();
             break;
 
             // if state = unlocked
-        case unlocked:
+        case (state === "unlocked"):
             unlockApp();
             break;
 
             // if state = refresh
-        case refresh:
+        case (state === "refresh"):
             defaultAppState();
             break;
     }
@@ -144,12 +154,12 @@ function lockModal(action) {
 
     switch (action) {
 
-        case show: // if action = show
+        case (action === "show"): // if action = show
             showLockModal(); // show the lockModal
             break;
 
 
-        case hide: // if action = hide
+        case (action === "hide"): // if action = hide
             hideLockModal(); // hide the lockModal
             break;
 
@@ -177,15 +187,17 @@ function lockModal(action) {
 }
 
 // function to GET, SET and CALCULATE remaining lock time
+// action is required; setTime is optional unless you are calling
+// lockTime(set, >>Must include time var here<<)
 function lockTime(action, setTime) {
 
     switch (action) {
 
-        case get: // if action = get
+        case (action === "get"): // if action = get
             getLockTime();
             break;
 
-        case set: // if action = set
+        case (action === "set"): // if action = set
 
             if (setTime == 0) {
                 setLockTimeNow();
@@ -195,7 +207,7 @@ function lockTime(action, setTime) {
 
             break;
 
-        case calculate: // if action = calculate
+        case (action === "calculate"): // if action = calculate
             calculateRemainingTime();
             break;
     }
@@ -242,13 +254,13 @@ function unlockTime(action, setTime) {
 
     switch (action) {
 
-        case get: // if action = get
+        case (action === "get"): // if action = get
             getUnlockTime();
             break;
 
-        case set: // if action = set
+        case (action === "set"): // if action = set
 
-            if (setTime == 0) {
+            if (setTime === 0) {
                 setUnlockTimeNow();
             } else {
                 setUnlockTime(setTime);
@@ -256,7 +268,7 @@ function unlockTime(action, setTime) {
 
             break;
 
-        case calculate: // if action = calculate
+        case (action === "calculate"): // if action = calculate
             calculateUnlockTime();
             break;
     }
