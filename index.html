@@ -146,15 +146,40 @@
                             <h3 id="lockoutModalTitle">That's it for today!</h3>
                             <span class="lead">Spins will reset in:</span>
                         </div>
-                        <div class="col-12">
-                            <h3 id="lockoutModalTitle">That's it for today!</h3>
-                            <span class="lead">Spins will reset in:</span>
-                        </div>
                         <div class="col-12 d-flex justify-content-center">
                             <div id="flipdown" class="flipdown"></div>
                         </div>
+                        <div class="col-12">
+                            <hr>
+                            <h4>Previous Results</h4>
+                            <div class="row modalPreviousResults">
+                                <div class="col">
+                                    <ul class="list-group">
+                                        <span class="list-group-item lead">
+                                            <i class="fa fa-dice-one"></i>
+                                            <span class="modalResult_1">No Result</span>
+                                        </span>
+                                    </ul>
 
-
+                                </div>
+                                <div class="col">
+                                    <ul class="list-group">
+                                        <span class="list-group-item lead">
+                                            <i class="fa fa-dice-two"></i>
+                                            <span class="modalResult_2">No Result</span>
+                                        </span>
+                                    </ul>
+                                </div>
+                                <div class="col">
+                                    <ul class="list-group">
+                                        <span class="list-group-item lead">
+                                            <i class="fa fa-dice-three"></i>
+                                            <span class="modalResult_3">No Result</span>
+                                        </span>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-refresh"></i> Refresh</button>
@@ -569,7 +594,7 @@
             }
         }
 
-        checkLockout();
+        //checkLockout();
 
         // -------------------------------------------------------
         // GET SPINS
@@ -578,7 +603,7 @@
             firebase.database()
                 .ref("app/YIBsfirMCeft5n4KMPBw/remainingSpins")
                 .on('value', snap => {
-                    console.log("getSpins() Spins Remaining: " + snap.val());
+                    //console.log("getSpins() Spins Remaining: " + snap.val());
                     spinCount = snap.val();
 
                     // format spin counter
@@ -622,6 +647,10 @@
                                 .removeClass("text-warning")
                                 .removeClass("text-success")
                                 .addClass("text-danger");
+
+                            // get the unlock time to set countdown
+                            getUnlockTime();
+                            setCountdown();
 
                             $('#lockoutModal').modal({
                                 backdrop: 'static',
@@ -692,6 +721,7 @@
                         console.log("Previous Result 1: " + snap.val());
                         result_1 = snap.val();
                         $('#result_1').text(result_1);
+                        //$('#modalResult_2').text(result_1);
                     })
 
                 // get result_2
@@ -701,6 +731,7 @@
                         console.log("Previous Result 2: " + snap.val());
                         result_2 = snap.val();
                         $('#result_2').text(result_2);
+                        //$('#modalResult_2').text(result_2);
                     })
 
                 // get result_3
@@ -710,6 +741,7 @@
                         console.log("Previous Result 3: " + snap.val());
                         result_3 = snap.val();
                         $('#result_3').text(result_3);
+                        //$('#modalResult_3').text(result_3);
                     })
             } else {
 
@@ -771,145 +803,112 @@
             return;
         }
 
-        // -------------------------------------------------------
-        // CHECK LOCKOUT STATUS
-        // -------------------------------------------------------
-        function checkLockout() {
+        // GET UNLOCK TIME
+        function getUnlockTime() {
+            // query firebase
+            firebase.database()
+                .ref("app/lockout/unlockTime")
+                .on('value', snap => {
+                    //console.log("Unlock Time (UNIX): " + snap.val());
+                    unlockTime = snap.val();
+                })
+            return this.unlockTime
+        }
 
-            // check if it's time to unlock
-            if (moment(currentTime).isSameOrAfter(unlockTime) == true) {
-                //if (moment(currentTime).isSameOrAfter(unlockTime)) {
-                // write 3 spins to firebase
-                nextCount = 3;
-                updateSpins(nextCount);
-                resetWheel();
+        // Flipdown.js Example
+        function setCountdown() {
 
-                // set firebase lockout to false
-                // and record to firebase final spin time
+            // Set up FlipDown
+            var flipdown = new FlipDown(unlockTime)
+
+            // Start the countdown
+            .start()
+
+            // Do something when the countdown ends
+            .ifEnded(() => {
+                // remove lockout status from database
                 firebase
                     .database()
                     .ref("app/lockout")
                     .set({
                             value: false,
-                            lockTime: null
+                            lockTime: null,
+                            unlockTime: null
                         },
                         function(error) {
                             if (error) {
-                                console.log("Unable to amend Lockout Status: " + error);
-                            } else {
-                                // set lockout to false
-                                lockout = false;
+                                console.log("Unable to remove Lockout Status: " + error);
+                            }
+                        }
+                    );
+                // and reset result1
+                firebase
+                    .database()
+                    .ref("app/result1")
+                    .set({
+                            result1: "No Result"
+                        },
+                        function(error) {
+                            if (error) {
+                                console.log("Unable to reset spins: " + error);
+                            }
+                        }
+                    );
+                // and reset result2
+                firebase
+                    .database()
+                    .ref("app/result2")
+                    .set({
+                            result2: "No Result"
+                        },
+                        function(error) {
+                            if (error) {
+                                console.log("Unable to reset spins: " + error);
+                            }
+                        }
+                    );
+                // and reset result3
+                firebase
+                    .database()
+                    .ref("app/result3")
+                    .set({
+                            result3: "No Result"
+                        },
+                        function(error) {
+                            if (error) {
+                                console.log("Unable to reset spins: " + error);
+                            }
+                        }
+                    );
+                // and reset spin count
+                firebase
+                    .database()
+                    .ref("app/YIBsfirMCeft5n4KMPBw")
+                    .set({
+                            remainingSpins: 3
+                        },
+                        function(error) {
+                            if (error) {
+                                console.log("Unable to reset spins: " + error);
                             }
                         }
                     );
 
-                console.log("Ready to Spin.");
-            } else {
-                console.log("App Locked Until: " + getUnlockTime());
-            }
-            // if past lockout time setting
-
-            // if still before lockout time setting
+                resetWheel();
+            });
         }
 
-        function getLockTime() {
-            firebase.database()
-                .ref("app/lockout/lockTime")
-                .on('value', snap => {
-
-                    // Write Lockout Time to Console
-                    //console.log("App Locked On: " + snap.val());
-
-                    // set the var 
-                    lockTime = moment(snap.val()).format();
-
-                })
-            console.log("Locktime: " + this.lockTime);
-            // return a value
-            return this.lockTime;
-        }
-
-        function getUnlockTime() {
-            firebase.database()
-                .ref("app/lockout/unlockTime")
-                .on('value', snap => {
-
-                    // Write Lockout Time to Console
-                    //console.log("App Locked On: " + snap.val());
-
-                    // set the var 
-                    unlockTime = snap.val();
-                })
-                //console.log("Unlock Time: " + this.unlockTime);
-                // return a value
-            return this.unlockTime
-        }
-
-        function getUnixUnlockTime() {
-            firebase.database()
-                .ref("app/lockout/unlockTime")
-                .on('value', snap => {
-
-                    // Write Lockout Time to Console
-                    //console.log("App Locked On: " + snap.val());
-
-                    // set the var 
-                    unlockUnixTime = moment(snap.val()).unix();
-                })
-                //console.log("Unlock Time: " + this.unlockTime);
-                // return a value
-            return this.unlockUnixTime
-        }
-
-        function getLockStatus() {
-            firebase.database()
-                .ref("app/lockout/value")
-                .on('value', snap => {
-
-                    // Write Lockout Time to Console
-                    //console.log("App Lock Status is: " + snap.val());
-
-                    // set the var 
-                    lockout = snap.val();
-
-                    // return a value
-                    return lockout;
-                })
-        }
-
-        // Flipdown.js Example
-        var time = null;
-        uTime = null;
-        cTime = moment();
-        uTime = moment(unlockTime).unix();
-        calcTime = ""
-
-        // Unix timestamp (in seconds) to count down to
-        timeDiff = unlockTime
-
-
-        // Set up FlipDown
-        var flipdown = new FlipDown(timeDiff)
-
-        // Start the countdown
-        .start()
-
-        // Do something when the countdown ends
-        .ifEnded(() => {
-            console.log('The countdown has ended!');
-        });
-
-        // Toggle theme
-        var interval = setInterval(() => {
-            let body = document.body;
-            body.classList.toggle('dark-theme');
-            // body.querySelector('#flipdown').classList.toggle('flipdown__theme-dark');
-            // body.querySelector('#flipdown').classList.toggle('flipdown__theme-light');
-        }, 5000);
-
-        // Show version number
-        var ver = document.getElementById('ver');
-        ver.innerHTML = flipdown.version;
+        $('#lockoutModal').on('shown.bs.modal', function() {
+            var r1 = result_1;
+            var r2 = result_2;
+            var r3 = result_3;
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $('#lockoutModal')
+            modal.find('.modalResult_1').text(result_1);
+            modal.find('.modalResult_2').text(result_2);
+            modal.find('.modalResult_3').text(result_3);
+        })
     </script>
 </body>
 

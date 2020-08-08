@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="What's for lunch?! Let's find out." />
+    <meta name="author" content="Taylor Jones - NexGen Digital Solutions LLC - Plymouth, Indiana" />
+    <!-- <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico" /> -->
+
+    <title>What's For Lunch? | Auto Park Buick GMC</title>
+
+    <link rel="canonical" href="https://lunch.nexgendms.com/" />
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous" />
+
+    <!-- Custom styles for this template -->
+    <link href="./assets/css/main.css" rel="stylesheet" />
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/59d21e7f77.js" crossorigin="anonymous"></script>
+
+    <!-- Spinwheel Config -->
+    <script src="./assets/js/Winwheel.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+
+    <!-- Flipdown.js -->
+    <script src="./assets/js/flipdown/js/flipdown.js"></script>
+    <link rel="stylesheet" href="./assets/js/flipdown/css/flipdown.css" />
+</head>
+
+<body class="text-center">
+    <div class="container">
+        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+            <header class="masthead mb-auto">
+                <div class="inner">
+                    <h4 class="masthead-brand">
+                        "Hey... What's for lunch?" - <small><i>Everyone</i></small>
+                    </h4>
+                    <nav class="nav nav-masthead justify-content-center">
+                        <a class="nav-link" href="#"><i class="fa fa-info-circle"></i> How To</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main role="main" class="inner cover">
+                <!-- Begin Spinner -->
+                <div class="row w-100 pb-3">
+                    <div class="col-12 col-md-6 text-left">
+                        <h1 class="cover-heading">Let's Get Started</h1>
+                        <p class="lead">Choose your spin speed and click/tap spin!</p>
+
+                        <div class="row border m-0 p-3">
+                            <div class="col-4 pb-3">Low <small>(3)</small></div>
+                            <div class="col-4 pb-3 text-center">
+                                Medium <small>(6)</small>
+                            </div>
+                            <div class="col-4 pb-3 text-right p-0">
+                                High <small>(10)</small>
+                            </div>
+                            <div class="col-12">
+                                <input type="range" class="custom-range w-100" min="1" max="3" id="spinSpeedRange" onClick="powerSelected($().val());" />
+                            </div>
+                        </div>
+                        <p class="lead pt-3">
+                            <button id="spin_button" class="btn btn-lg btn-block btn-outline-success" onClick="startSpin()">
+                                Spin
+                            </button>
+                        </p>
+                        <!-- Begin Results -->
+                        <div class="row border-top">
+                            <div class="col-12 text-left">
+                                <h4 class="cover-heading pt-3">Spin Results</h4>
+                                <ul class="list-group">
+                                    <a class="list-group-item">
+                                        <i class="fa fa-dice-one fa-2x"></i>
+                                        <span id="result_1" class="lead">No Result</span>
+                                    </a>
+                                    <a class="list-group-item">
+                                        <i class="fa fa-dice-two fa-2x"></i>
+                                        <span id="result_2" class="lead">No Result</span>
+                                    </a>
+                                    <a class="list-group-item">
+                                        <i class="fa fa-dice-three fa-2x"></i>
+                                        <span id="result_3" class="lead">No Result</span>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="row mb-3">
+                            <div class="col text-right">
+                                <h4>Remaining Spins:</h4>
+                            </div>
+                            <div class="col text-left">
+                                <h4 id="spins_remaining" class="text-success"></h4>
+                            </div>
+                        </div>
+                        <div class="power_controls">
+                            <table class="power" cellpadding="0" cellspacing="0" border="0">
+                                <td width="600" height="600" class="the_wheel" align="center" valign="center">
+                                    <canvas id="canvas" width="600" height="600">
+                                        <p style="
+                                   {
+                                    color: white;
+                                  }
+                                " align="center">
+                                            Sorry, your browser doesn't support canvas. Please try
+                                            another.
+                                        </p>
+                                    </canvas>
+                                </td>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <footer class="mastfoot mt-auto">
+                <div class="inner">
+                    <span class="text-center">
+                        <b>Current Time: </b>
+                        <span id="current_time"></span>
+                    </span>
+                    <p>
+                        Made with <i class="fa fa-heart"></i> for everyone...
+                        <u>Except</u> Kyle.
+                    </p>
+                </div>
+            </footer>
+        </div>
+        <!-- Lockout Modal -->
+        <div class="modal fade" id="lockoutModal" tabindex="-1" role="dialog" aria-labelledby="lockoutModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <div class="modal-body text-center">
+                        <div class="col-12">
+                            <h3 id="lockoutModalTitle">That's it for today!</h3>
+                            <span class="lead">Spins will reset in:</span>
+                        </div>
+                        <div class="col-12">
+                            <h3 id="lockoutModalTitle">That's it for today!</h3>
+                            <span class="lead">Spins will reset in:</span>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                            <div id="flipdown" class="flipdown"></div>
+                        </div>
+
+
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <!-- ========================= -->
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous">
+    </script>
+    <script>
+        // initiate material design
+        $(document).ready(function() {
+            $("body").bootstrapMaterialDesign();
+        });
+
+        // === Live Clock Display ===
+
+        function update() {
+            $('#current_time').text(moment().format('MMMM D, YYYY H:mm:ss'));
+        }
+
+        setInterval(update, 1000);
+    </script>
+    <!-- == TweenMax JavaScript == -->
+    <!-- ========================= -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    <script src="./assets/js/firebase.js"></script>
+    <!-- Moment.JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
+
+    <!-- ========================== -->
+    <!-- =========== App ========== -->
+    <script>
+        //      ============== Logic ==============
+        //      1. Get Status
+        //          - isLocked
+        //              - Yes > getUnlockTime() > displayLockModal
+        //              - No > loadApp() > get(spins)
+        //                                      if (spins == 3) => clearPrevResults();
+        //                                      if (spins == 2) => get(results_1);
+        //                                      if (spins == 1) => get(results_1, results_2);
+        //                                      else { lockApp(); displayLockModal(); }
+
+        //     ============== Gameplay ==============
+        //     1. Spin 3 Times to get 3 Results
+        //     2. Wheel modifies to only have 1st Game Results
+        //     3. Spin Twice
+        //     4. Modify  Wheel to Final Two
+        //     5. Spin Once
+        //     6. Final Winner
+        //     7. On last Spin, record result & timestamp
+        //     8. Calculate unlock time (var lockTimerLength) and write to DB
+        //     9. Lock The App and Display Moday with running 6-Day (Mon-Sat) results.
+        //         - If no result, display "No Result"
+
+        // constructors
+        //const fb = newFunction();
+        const moment = moment();
+
+        // function actions
+        const show = "show";
+        const hide = "hide";
+        const get = "get";
+        const set = "set";
+        const now = "now";
+        const calculate = "calculate";
+        const locked = "locked";
+        const unlocked = "unlocked";
+        const refresh = "refresh";
+
+        // variables
+        var isLocked, lockTime, unlockTime, spinCount, result1,
+            result2, result3, result4, result5, result6, lockTimeRemaining,
+            mondayResult, tuesdayResult, wednesdayResult, thursdayResult,
+            fridayResult, saturdayResult;
+
+        // customize these variables to your preference
+        var lockTimer = 12; // set number of HOURS to lock the app after game
+        var errorLockTimer = 0 // set the number of HOURS to lock the app on state change error
+
+        // arrays
+        var roundOneResults = [game0, game1, game2]; // array holding first game results
+        var roundTwoResults = [game0, game1]; // array holding second game results
+        var roundThreeResult = [game0]; // array holding final result
+        //var previousResults = []; // previous 6-days final game results
+
+        // Get/Set App Status
+        initApp();
+
+        // ===== CORE FUNCTIONS =====
+        // Initial checkAppStatus function --
+        // this function is run at the beginning of page load
+        // checks if app is locked or unlocked then performs startup
+        // functions.
+        function initApp() {
+
+            // first, let's check the lock status
+            isLocked ? setState(locked) // if (isLocked == true) then lock the app
+                :
+                (isLocked == false) ? setState(unlocked) // else if (isLocked == false) then unlock the app
+                :
+                setState(refresh); // otherwise, if (isLocked == neither true nor false) => go ahead and set the app to the default state
+
+        }
+
+        // the setState function provides the logic to setting the state of the app.
+        // can be called anywhere in the app with "locked", "unlocked" and "refresh"
+        // refresh state will clear all spins and locks.
+        function setState(state) {
+
+            switch (state) {
+                // if state = locked
+                case locked:
+                    lockApp();
+                    break;
+
+                    // if state = unlocked
+                case unlocked:
+                    unlockApp();
+                    break;
+
+                    // if state = refresh
+                case refresh:
+                    defaultAppState();
+                    break;
+            }
+
+            // =========================================== //
+            // ======== STATE SETTING FUNCTIONS ========== //
+            // =========================================== //
+            // This function will lock the app as follows:
+            // 1. if isLocked == true => Next Step
+            //    if isLocked == false || null || undefined => set isLocked = true;
+            // 2. Once isLocked = false then get time until unlocked from the database
+            //    If no time until unlock exists/can't be calculated reset the app to
+            //    it's default state.
+            // 3. Once the time to unlock is determined, display the lockedModal
+            //    We'll also get the previous results history while showing the
+            //    lockedModal.
+            async function lockApp() {
+                // if isLocked == false OR null OR undefined
+                if (!isLocked || isLocked == null || isLocked == undefined) {
+
+                    isLocked = true; // set state to locked
+                    lockTime(set, now) // now write the lock time to database
+                        .then(
+                            lockModal(show) // once lock time is set, show lockModal
+                        );
+
+                    Promise.resolve(); // and resolve the promise
+
+                } else {
+
+                    alert("ALERT: No Prior Lock State Declared - Locking App Anyways")
+                    isLocked = true; // set state to locked
+                    setLockTime() // now write the lock time to database
+                        .then(
+                            lockModal(show) // once lock time is set, show lockModal
+                        );
+
+                    Promise.resolve(); // and resolve the promise
+                }
+            }
+
+            async function unlockApp() {
+                // if isLocked == false OR null OR undefined
+                if (!isLocked || isLocked == null || isLocked == undefined) {
+
+                    isLocked = false; // set state to unlocked
+                    clearLockTime() // now clear the unlock time in database
+                        .then(
+                            lockModal(hide) // once lock time is cleared, hide lockModal
+                        );
+
+                    Promise.resolve(); // and resolve the promise
+
+                } else {
+
+                    alert("ALERT: No Prior Lock State Declared - Unlocking App Anyways")
+                    isLocked = false; // set state to unlocked
+                    clearLockTime() // now clear the unlock time in database
+                        .then(
+                            lockModal(hide) // once lock time is cleared, hide lockModal
+                        );
+
+                    Promise.resolve(); // and resolve the promise
+                }
+            }
+        }
+
+        function lockModal(action) {
+
+            switch (action) {
+
+                case show: // if action = show
+                    showLockModal(); // show the lockModal
+                    break;
+
+
+                case hide: // if action = hide
+                    hideLockModal(); // hide the lockModal
+                    break;
+
+                default:
+                    alert("ERR: Modal Action Not Recognized/Declared:\n" + action);
+            }
+
+            // =========================================== //
+            // ========== LOCK MODAL FUNCTIONS =========== //
+            // =========================================== //
+
+            // showLockModal() will display the lockModal with a count down to unlock
+            async function showLockModal() {
+                // get the unlock time
+                // load the countdown
+                // Show the Modal
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // clearLockModal() will clear the lockModal
+            async function hideLockModal() {
+                // Do Stuff
+                Promise.resolve(); // and resolve the promise
+            }
+        }
+
+        // function to GET, SET and CALCULATE remaining lock time
+        // action is required; setTime is optional unless you are calling
+        // lockTime(set, >>Must include time var here<<)
+        async function lockTime(action, setTime) {
+
+            switch (action) {
+                case get:
+                    // if action = get
+                    getLockTime();
+                    break;
+
+                case set: // if action = set
+                    if (setTime === now) {
+                        setLockTimeNow();
+                    } else if (setTime === null || setTime === undefined) {
+                        alert("No time to set declared. LockTime not Set!")
+                    } else {
+                        setLockTime(setTime);
+                    }
+                    break;
+
+                case calculate: // if action = calculate
+                    calculateRemainingTime();
+                    break;
+
+                default:
+                    getLockTime();
+            }
+
+            Promise.resolve(); // and resolve the promise
+
+            // =========================================== //
+            // =========== lockTime FUNCTIONS ============ //
+            // =========================================== //
+
+            // get the time the app was locked
+            async function getLockTime() {
+                // query firebase for the lock time
+                // set lockTime var to result
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // set the lockTime to a predetermined time
+            // setTime must be a time in UNIX Seconds
+            async function setLockTime(setTime) {
+                // check that setTime is in UNIX Seconds
+                // if it is then write to firebase => lockTime: setTime
+                // else, try to convert
+                // if can't => throw error
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // this will set the lock time to the current time
+            async function setLockTimeNow() {
+                time = moment().unix();
+                // write to firebase => lockTime: time
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // clearLockModal() will clear the lockModal
+            async function calculateRemainingTime() {
+                // get the current time
+                // get the lock time from firebase
+                // lockTime - currentTime = remainingTime
+                // return remainingTime
+                Promise.resolve(); // and resolve the promise
+            }
+        }
+
+
+        // function to GET, SET and CALCULATE unlock time
+        function unlockTime(action, setTime) {
+
+            switch (action) {
+                case get:
+                    // if action = get
+                    getUnlockTime();
+                    break;
+
+                case set: // if action = set
+                    if (setTime === now) {
+                        setUnlockTimeNow();
+                    } else if (setTime === null || setTime === undefined) {
+                        alert("No time to set declared. LockTime not Set!")
+                    } else {
+                        setUnlockTime(setTime);
+                    }
+                    break;
+
+                case calculate: // if action = calculate
+                    calculateUnlockTime();
+                    break;
+
+                default:
+                    getUnlockTime();
+            }
+
+            return;
+
+            // =========================================== //
+            // =========== lockTime FUNCTIONS ============ //
+            // =========================================== //
+
+            // get the time the app was unlocked
+            async function getUnlockTime() {
+                // query firebase for the unlock time
+                // set unlockTime var to result
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // set the unlock to a predetermined time
+            // setTime must be a time in UNIX Seconds
+            async function setUnlockTime(setTime) {
+                // check that setTime is in UNIX Seconds
+                // if it is then write to firebase => unlockTime: calculatedUnlockTime
+                // else, try to convert
+                // if can't => throw error
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // this will set the unlock time to the current time
+            async function setUnlockTimeNow() {
+                time = moment().unix();
+                // write to firebase => unlockTime: time
+                Promise.resolve(); // and resolve the promise
+            }
+
+            // calculateUnlockTime will calculate when the app is to unlock
+            async function calculateUnlockTime() {
+                // get the current time
+                // get the lock time from firebase
+                // unlockTime - currentTime = remainingTimeUntilUnlock
+                // return remainingTimeUntilUnlock
+                Promise.resolve(); // and resolve the promise
+            }
+        }
+
+        // ===== HELPER FUNCTIONS =====
+
+        // This function is used to return a bool for status of app.
+        // USE CASE: Check status of app before writing to DB, allowing spin, etc...
+        // ==============================================================
+        // TODO: implement "simple check" & "complex check"            ||
+        // Simple check: simply check and return the isLocked bool.    ||
+        // Complex Check: Query the database for status and return it. ||
+        // ==============================================================
+        async function checkAppStatus() {
+            // returns: if app locked => bool true / if app unlocked: bool false / else: error alert
+            return isLocked ? true : !isLocked ? false : alert("Error: No AppStatus Declared/Set");
+        }
+    </script>
+    <!-- ========================== -->
+    <script>
+        var unlockTime = "";
+        // Flipdown.js Example
+        var time = null;
+        uTime = null;
+        cTime = moment();
+        uTime = moment(unlockTime).unix();
+        calcTime = "";
+
+        // Unix timestamp (in seconds) to count down to
+        timeDiff = unlockTime
+
+
+        // Set up FlipDown
+        var flipdown = new FlipDown(timeDiff)
+
+        // Start the countdown
+        .start()
+
+        // Do something when the countdown ends
+        .ifEnded(() => {
+            console.log('The countdown has ended!');
+        });
+
+        // Toggle theme
+        var interval = setInterval(() => {
+            let body = document.body;
+            body.classList.toggle('dark-theme');
+            // body.querySelector('#flipdown').classList.toggle('flipdown__theme-dark');
+            // body.querySelector('#flipdown').classList.toggle('flipdown__theme-light');
+        }, 5000);
+
+        // Show version number
+        var ver = document.getElementById('ver');
+        ver.innerHTML = flipdown.version;
+    </script>
+
+</body>
+
+</html>
